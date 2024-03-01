@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchShows } from '../../Containers/TVShow/TVShowSlice';
 import { Link } from 'react-router-dom';
 import './SearchBar.css';
+import { fetchShows } from '../../Containers/TVShow/TVShowThunks';
 
 const SearchBar: React.FC = () => {
   const [show, setShow] = useState('');
@@ -27,7 +27,8 @@ const SearchBar: React.FC = () => {
   useEffect(() => {
     if (debouncedShow) {
       dispatch(fetchShows(debouncedShow));
-    }
+    };
+
   }, [debouncedShow, dispatch]);
 
   return (

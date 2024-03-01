@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchShowDetails } from './TVShowSlice';
+import { fetchShowDetails } from './TVShowThunks';
 import Loader from '../../Components/Loader/Loader';
 
 const ShowDetailsPage = () => {
@@ -14,6 +14,7 @@ const ShowDetailsPage = () => {
       dispatch(fetchShowDetails(parseInt(id)));
     }
   }, [id, dispatch]);
+
   if (!showDetails) {
     return <div><Loader /></div>;
   }
