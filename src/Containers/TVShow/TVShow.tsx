@@ -19,15 +19,17 @@ const ShowDetailsPage = () => {
   }
 
   return (
-    <div>
-      <h1>{showDetails.name}</h1>
+    <div className='d-flex justify-content-around mt-5 border border-2 rounded-3 m-3 p-3'>
       {showDetails.image && <img src={showDetails.image.medium} alt={`Poster for ${showDetails.name}`} />}
-      <p dangerouslySetInnerHTML={{ __html: showDetails.summary }} /> 
-      <p>Genre: {showDetails.genres.join(' | ')}</p>
-      <p>Type: {showDetails.type}</p>
-      <p>Language: {showDetails.language}</p>
-      <p>Status: {showDetails.status}</p>
-      <p>Premiered: {showDetails.premiered}</p>
+      <div className='w-75'>
+        <h1>{showDetails.name}</h1>
+        <p dangerouslySetInnerHTML={{ __html: showDetails.summary }} /> 
+        <p>Genre: {showDetails.genres.join(' | ')}</p>
+        <p>Type: {showDetails.type}</p>
+        <p>Language: {showDetails.language}</p>
+        <p>Status: {showDetails.status}</p>
+        <p>Premiered: {showDetails.premiered}</p>
+      </div>
     </div>
   );
 };

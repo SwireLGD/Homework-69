@@ -1,0 +1,27 @@
+.SearchBox {
+    position: relative; 
+    width: 100%;
+  }
+  
+  .SearchAutocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; 
+    background: white;
+    border: none; 
+    z-index: 9999; 
+  }
+  
+  .SearchAutocomplete div {
+    padding: 5px;
+  }
+  
+  .SearchAutocomplete div:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .input-group-text {
+    width: calc(100% - 32px);
+  }
+  
