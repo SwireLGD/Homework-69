@@ -3,19 +3,23 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Link } from 'react-router-dom';
 import './SearchBar.css';
 import { fetchShows } from '../../Containers/TVShow/TVShowThunks';
+import { Show } from '../../types';
 
 const SearchBar: React.FC = () => {
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState<string>('');
   const dispatch = useAppDispatch();
-  const shows = useAppSelector((state) => state.TVShow.shows);
-  const [debouncedShow, setDebouncedShow] = useState(show);
+  const shows = useAppSelector((state) => state.TVShow.shows as Show[]);
+  const [debouncedShow, setDebouncedShow] = useState<string>(show);
+  const [isAutocompleteActive, setIsAutoCompleteActive] = useState<boolean>(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       if (show.trim()) {
         setDebouncedShow(show);
+        setIsAutoCompleteActive(true);
       } else {
         setDebouncedShow('');
+        setIsAutoCompleteActive(false);
       }
     }, 500);
 
@@ -28,8 +32,24 @@ const SearchBar: React.FC = () => {
     if (debouncedShow) {
       dispatch(fetchShows(debouncedShow));
     };
-
   }, [debouncedShow, dispatch]);
+
+  useEffect(() => {
+    const closeDropdown = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.SearchBox')) {
+        setIsAutoCompleteActive(false);
+      }
+    };
+
+    if (isAutocompleteActive) {
+      document.addEventListener('click', closeDropdown);
+    }
+
+    return () => {
+      document.removeEventListener('click', closeDropdown);
+    };
+  }, [isAutocompleteActive]);
 
   return (
     <div className='d-flex align-items-center SearchBox'>
@@ -39,16 +59,18 @@ const SearchBar: React.FC = () => {
         type="text"
         id="search"
         value={show}
-        onChange={(e) => setShow(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShow(e.target.value)}
         placeholder="Search TV Shows"
       />
-      <div className='SearchAutocomplete'>
-        {debouncedShow && shows.map((show) => (
-          <div key={show.id}>
-            <Link to={`/shows/${show.id}`} className='text-black text-decoration-none'>{show.name}</Link>
-          </div>
-        ))}
-      </div>
+      {isAutocompleteActive && (
+        <div className='SearchAutocomplete'>
+          {shows.map((show: Show) => (
+            <div key={show.id}>
+              <Link to={`/shows/${show.id}`} className='text-black text-decoration-none'>{show.name}</Link>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
